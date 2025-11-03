@@ -12,12 +12,12 @@ def get_exp_for_completed_daily(random_daily):
     return int(random_daily[1])
 
 
-def get_exp_for_completed_challenge(choosen_material):
+def get_exp_for_completed_challenge(chosen_material):
     additional_question = input("Это полноценная работа? yes/no: ")
     if additional_question == "yes":
-        return int(choosen_material[3])
+        return int(chosen_material[3])
     elif additional_question == "no":
-        return int(choosen_material[2])
+        return int(chosen_material[2])
     else:
         return 0
 
