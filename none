@@ -1,0 +1,123 @@
+[1mdiff --git a/__pycache__/lvl_and_exp.cpython-39.pyc b/__pycache__/lvl_and_exp.cpython-39.pyc[m
+[1mindex 1829489..457d1c1 100644[m
+Binary files a/__pycache__/lvl_and_exp.cpython-39.pyc and b/__pycache__/lvl_and_exp.cpython-39.pyc differ
+[1mdiff --git a/lvl_and_exp.py b/lvl_and_exp.py[m
+[1mindex 4c456d9..5650e50 100644[m
+[1m--- a/lvl_and_exp.py[m
+[1m+++ b/lvl_and_exp.py[m
+[36m@@ -105,8 +105,40 @@[m [mclass ActivitiesAndStore:[m
+             raise ValueError(f"No table named '{name} loaded.")[m
+         return self.tables[name][m
+ [m
+[32m+[m[32m    def choose(self, table_name, field_index=None):[m
+[32m+[m[32m        if table_name not in self.tables:[m
+[32m+[m[32m            print(f"❌ Table '{table_name}' not found!")[m
+[32m+[m[32m            return None[m
+[32m+[m[32m        table = self.tables[table_name][m
+[32m+[m
+[32m+[m[32m        # Print all available rows in material\store[m
+[32m+[m[32m        print(f"📋 Доступны следующие {table_name}ы:")[m
+[32m+[m[32m        for i, row in enumerate(table):[m
+[32m+[m[32m            print(f"{i}: {row}")[m
+[32m+[m
+[32m+[m[32m        choice = input("Введите номер желаемого материала: ")[m
+[32m+[m[32m        if not choice.isdigit():[m
+[32m+[m[32m            print("❌ Нужно ввести номер!")[m
+[32m+[m[32m            return None[m
+[32m+[m
+[32m+[m[32m        choice = int(choice)[m
+[32m+[m[32m        if not (0 <= choice < len(table)):[m
+[32m+[m[32m            print("❌ Неправильный материал!")[m
+[32m+[m[32m            return None[m
+[32m+[m[32m        selected_row = table[choice][m
+[32m+[m[32m        if field_index is not None:[m
+[32m+[m[32m            if not (0 <= field_index < len(selected_row)):[m
+[32m+[m[32m                print("❌ Нет такого поля!")[m
+[32m+[m[32m                return None[m
+[32m+[m[32m            print(f"✅ Получено экспы: {selected_row[field_index]}")[m
+[32m+[m[32m            return selected_row[field_index][m
+[32m+[m[32m        print(f"✅ Выбран материал: {selected_row}")[m
+[32m+[m[32m        return selected_row[m
+[32m+[m
+ [m
+ # This will print any activities preloaded from csv row by row[m
+ def print_all_rows(name):[m
+[32m+[m[32m    i = 0[m
+     for row in name:[m
+[31m-        print(row[0], row[1])[m
+[32m+[m[32m        print(f"{i}. {row[0]} {row[1]}")[m
+[32m+[m[32m        i += 1[m
+[1mdiff --git a/main.py b/main.py[m
+[1mindex b1946f8..a623f29 100644[m
+[1m--- a/main.py[m
+[1m+++ b/main.py[m
+[36m@@ -12,6 +12,16 @@[m [mdef get_exp_for_completed_daily(random_daily):[m
+     return int(random_daily[1])[m
+ [m
+ [m
+[32m+[m[32mdef get_exp_for_completed_challenge(choosen_material):[m
+[32m+[m[32m    additional_question = input("Это полноценная работа? yes/no: ")[m
+[32m+[m[32m    if additional_question == "yes":[m
+[32m+[m[32m        return int(choosen_material[3])[m
+[32m+[m[32m    elif additional_question == "no":[m
+[32m+[m[32m        return int(choosen_material[2])[m
+[32m+[m[32m    else:[m
+[32m+[m[32m        return 0[m
+[32m+[m
+[32m+[m
+ def main():[m
+     # Load a current saved players data OR reate a new player if there are none to load[m
+     player = PlayerStats.load_data()[m
+[36m@@ -19,18 +29,17 @@[m [mdef main():[m
+ [m
+     # Get a random daily quest, complete it and confirm the result to claim the points![m
+     daily_quest_data = ActivitiesAndStore()[m
+[31m-    daily_quest = daily_quest_data.load_csv("Квест", "daily_quest.csv")[m
+[32m+[m[32m    daily_quest_data.load_csv("Квест", "daily_quest.csv")[m
+     random_daily = daily_quest_data.get_random_row("Квест")[m
+     print(random_daily[0])[m
+     player.lvl_up(get_exp_for_completed_daily(random_daily))[m
+ [m
+[31m-    # Get a list of all major activities and print them all[m
+[32m+[m[32m    # Get a list of all major activities, choose one challenge and check if it was completed[m
+     all_activities_data = ActivitiesAndStore()[m
+     all_activities_data.load_csv("Материал", "activities_data.csv")[m
+[31m-    print_all_rows(all_activities_data.get_all_rows("Материал"))[m
+[31m-[m
+[31m-    # A function that will get the task and calculate the exp gained for completing it[m
+[31m-    # choosen_material = input("Выбери материал из списка: ")[m
+[32m+[m[32m    chosen_challenge = all_activities_data.choose("Материал")[m
+[32m+[m[32m    if chosen_challenge:[m
+[32m+[m[32m        player.lvl_up(get_exp_for_completed_challenge(chosen_challenge))[m
+ [m
+     # TEST playground[m
+     # player.lvl_up(25)[m
+[36m@@ -45,9 +54,10 @@[m [mif __name__ == "__main__":[m
+ [m
+ [m
+ # TODO[m
+[31m-# 1. Create a player class with lvl, exp and coins                              -DONE[m
+[31m-# 2. Create a table of daily and special activities                             -DONE[m
+[31m-# 3. Create a system of calculating the exp gained for completed activities     - daily - DONE, others are in progress[m
+[31m-# 4. Add additional bonuses - achievements, special bonuses                     -DONE[m
+[31m-# 5. Create a store with prizes for coins.                                      -DONE[m
+[32m+[m[32m# 1. Create a player class with lvl, exp and coins                              - DONE[m
+[32m+[m[32m# 2. Create a table of daily and special activities                             - DONE[m
+[32m+[m[32m# 3. Create a system of calculating the exp gained for completed activities     -[m
+[32m+[m[32m# 4. Add additional bonuses - achievements, special bonuses                     - DONE[m
+[32m+[m[32m# 5. Create a store with prizes for coins.                                      - DONE[m
+ # 6. Make a clickable store with coins spending system                          -[m
+[32m+[m[32m# 7. Link it to a git repository                                                - DONE[m
+[1mdiff --git a/player_data.json b/player_data.json[m
+[1mindex be836df..dc69525 100644[m
+[1m--- a/player_data.json[m
+[1m+++ b/player_data.json[m
+[36m@@ -1,6 +1,6 @@[m
+ {[m
+     "current_lvl": 1,[m
+[31m-    "exp_gained": 35,[m
+[32m+[m[32m    "exp_gained": 30,[m
+     "coins": 0,[m
+     "title": " \u041d\u0430\u0447\u0438\u043d\u0430\u044e\u0449\u0438\u0439"[m
+ }[m
+\ No newline at end of file[m

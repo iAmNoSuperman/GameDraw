@@ -105,8 +105,40 @@ class ActivitiesAndStore:
             raise ValueError(f"No table named '{name} loaded.")
         return self.tables[name]
 
+    def choose(self, table_name, field_index=None):
+        if table_name not in self.tables:
+            print(f"❌ Table '{table_name}' not found!")
+            return None
+        table = self.tables[table_name]
+
+        # Print all available rows in material\store
+        print(f"📋 Доступны следующие {table_name}ы:")
+        for i, row in enumerate(table):
+            print(f"{i}: {row}")
+
+        choice = input("Введите номер желаемого материала: ")
+        if not choice.isdigit():
+            print("❌ Нужно ввести номер!")
+            return None
+
+        choice = int(choice)
+        if not (0 <= choice < len(table)):
+            print("❌ Неправильный материал!")
+            return None
+        selected_row = table[choice]
+        if field_index is not None:
+            if not (0 <= field_index < len(selected_row)):
+                print("❌ Нет такого поля!")
+                return None
+            print(f"✅ Получено экспы: {selected_row[field_index]}")
+            return selected_row[field_index]
+        print(f"✅ Выбран материал: {selected_row}")
+        return selected_row
+
 
 # This will print any activities preloaded from csv row by row
 def print_all_rows(name):
+    i = 0
     for row in name:
-        print(row[0], row[1])
+        print(f"{i}. {row[0]} {row[1]}")
+        i += 1
