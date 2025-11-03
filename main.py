@@ -36,6 +36,8 @@ def main():
     print(random_daily[0])
     player.lvl_up(get_exp_for_completed_daily(random_daily))
 
+    # comment to demonstrate git branches
+
     # Get a list of all major activities, choose one challenge and check if it was completed
     all_activities_data = ActivitiesAndStore()
     all_activities_data.load_csv("Материал", "activities_data.csv")
