@@ -22,9 +22,9 @@ class PlayerStats:
                 self.exp_gained -= 100
                 self.current_lvl += 1
                 if self.current_lvl % 5 == 0:
-                    self.coins += 7
-                else:
                     self.coins += 5
+                else:
+                    self.coins += 3
         self.update_title()
 
     def coins_added(self, amount):
@@ -84,7 +84,7 @@ class PlayerStats:
         self.save_data()
 
 
-# class for handling the csv files with a bunch of activities and store
+# class for handling the csv files with a daily quests, challenges and store
 class ActivitiesAndStore:
     def __init__(self):
         self.tables = {}
@@ -111,7 +111,6 @@ class ActivitiesAndStore:
             return None
         table = self.tables[table_name]
 
-        # Print all available rows in material\store
         print(f"📋 Доступны следующие {table_name}ы:")
         for i, row in enumerate(table):
             print(f"{i}: {row}")
@@ -126,6 +125,7 @@ class ActivitiesAndStore:
             print("❌ Неправильный материал!")
             return None
         selected_row = table[choice]
+
         if field_index is not None:
             if not (0 <= field_index < len(selected_row)):
                 print("❌ Нет такого поля!")
@@ -136,9 +136,9 @@ class ActivitiesAndStore:
         return selected_row
 
 
-# This will print any activities preloaded from csv row by row
-def print_all_rows(name):
-    i = 0
-    for row in name:
-        print(f"{i}. {row[0]} {row[1]}")
-        i += 1
+# This, if imported, will print any activities preloaded from csv row by row
+# def print_all_rows(name):
+#     i = 0
+#     for row in name:
+#         print(f"{i}. {row[0]} {row[1]}")
+#         i += 1
