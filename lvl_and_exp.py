@@ -11,7 +11,7 @@ class PlayerStats:
         self.current_lvl = current_lvl
         self.exp_gained = exp_gained
         self.coins = coins
-        self.title = "Unranked "
+        self.title = "Без ранга "
         self.title_table = self.load_titles("titles.csv")
         self.update_title()
 
@@ -34,7 +34,7 @@ class PlayerStats:
         if self.coins - amount >= 0:
             self.coins -= amount
         else:
-            print("The operation can not be processed: Not enough coins")
+            print("Казна опустела, милорд. Нужно больше золота =(")
 
     def load_titles(self, filename):
         titles = {}
@@ -65,12 +65,12 @@ class PlayerStats:
         }
         with open(filename, "w") as save_file:
             json.dump(data, save_file, indent=4)
-        print(f"Data was saved to {filename}")
+        print(f"Данные сохранены в {filename}")
 
     @classmethod
     def load_data(cls, filename="player_data.json"):
         if not os.path.exists(filename):
-            print("No dave data. Creating a new save file!")
+            print("Сохранений не найдено. Создано новое сохранение!")
             return cls(1, 0, 0)
         with open(filename, "r") as save_file:
             data = json.load(save_file)
@@ -80,7 +80,7 @@ class PlayerStats:
         self.current_lvl = 1
         self.exp_gained = 0
         self.coins = 0
-        self.title = "Unranked"
+        self.title = "Без ранга"
         self.save_data()
 
 
@@ -97,17 +97,17 @@ class ActivitiesAndStore:
 
     def get_random_row(self, name):
         if name not in self.tables:
-            raise ValueError(f"No table named '{name} loaded.")
+            raise ValueError(f"Файл '{name} не найден. Данные не загружены.")
         return self.tables[name][random.randint(1, len(self.tables[name]) - 1)]
 
     def get_all_rows(self, name):
         if name not in self.tables:
-            raise ValueError(f"No table named '{name} loaded.")
+            raise ValueError(f"Файл '{name} не найден. Данные не загружены..")
         return self.tables[name]
 
     def choose(self, table_name, field_index=None):
         if table_name not in self.tables:
-            print(f"❌ Table '{table_name}' not found!")
+            print(f"❌ Список '{table_name}' не найден!")
             return None
         table = self.tables[table_name]
 
@@ -130,7 +130,7 @@ class ActivitiesAndStore:
             if not (0 <= field_index < len(selected_row)):
                 print("❌ Нет такого поля!")
                 return None
-            print(f"✅ Получено экспы: {selected_row[field_index]}")
+            print(f"✅ Получено опыта: {selected_row[field_index]}")
             return selected_row[field_index]
         print(f"✅ Выбран материал: {selected_row}")
         return selected_row
