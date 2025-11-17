@@ -121,7 +121,7 @@ class ActivitiesAndStore:
             return None
 
         choice = int(choice)
-        if not (0 <= choice < len(table)):
+        if not (1 <= choice < len(table)):
             print("❌ Неправильный материал!")
             return None
         selected_row = table[choice]

@@ -22,6 +22,18 @@ def get_exp_for_completed_challenge(chosen_material):
         return 0
 
 
+def open_store(player_data):
+    choice = input("Хотите открыть магазин (yes/no): ")
+    if choice != "yes":
+        return 0
+    store = ActivitiesAndStore()
+    store.load_csv("Награда", "store.csv")
+    store_list = store.choose("Награда")
+    player_data.coins_spent(int(store_list[1]))
+    # player.lvl_up(get_exp_for_completed_challenge(chosen_challenge))
+    return 0
+
+
 def main():
     # Load a current saved players data OR reate a new player if there are none to load
     player = PlayerStats.load_data()
@@ -45,18 +57,26 @@ def main():
     if chosen_challenge:
         player.lvl_up(get_exp_for_completed_challenge(chosen_challenge))
 
+    # The store function that provide the function with a player data to extract coins
+    open_store(player)
+
+
     # TEST playground
     # To lvl up a player manualy run this:
-    # player.lvl_up(25)
+    # player.lvl_up(55)
+    player.coins_spent(176)
     # It is possible to call challenge.choose table with a field index. In this case it will return the indexed field
     # chosen_challenge = all_activities_data.choose("Материал", field_index=3)
 
+
     # Printing and saving the result
-    print(f"Final state -> Level: {player.current_lvl}, "
-          f"               Exp: {player.exp_gained}, "
-          f"               Coins: {player.coins}, "
+    print(f"Final state -> Level: {player.current_lvl},\n "
+          f"               Exp: {player.exp_gained},\n "
+          f"               Coins: {player.coins},\n "
           f"               Титул: {player.title}")
+
     player.save_data()
+
 
 
 if __name__ == "__main__":
