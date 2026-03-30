@@ -123,7 +123,7 @@ class ActivitiesAndStore:
         choice = int(choice)
         if not (1 <= choice < len(table)):
             print("❌ Неправильный материал!")
-            return None
+            return ["Ничего", 0, 0]
         selected_row = table[choice]
 
         if field_index is not None:
