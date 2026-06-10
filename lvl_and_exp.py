@@ -12,7 +12,7 @@ class PlayerStats:
         self.exp_gained = exp_gained
         self.coins = coins
         self.title = "Unranked "
-        self.title_table = self.load_titles("titles.csv")
+        self.title_table = self.load_titles("data/titles.csv")
         self.update_title()
 
     def lvl_up(self, exp_gained):
@@ -56,7 +56,7 @@ class PlayerStats:
         else:
             self.title = "Unranked"
 
-    def save_data(self, filename="player_data.json"):
+    def save_data(self, filename="data/player_data.json"):
         data = {
             "current_lvl": self.current_lvl,
             "exp_gained": self.exp_gained,
@@ -68,7 +68,7 @@ class PlayerStats:
         print(f"Data was saved to {filename}")
 
     @classmethod
-    def load_data(cls, filename="player_data.json"):
+    def load_data(cls, filename="data/player_data.json"):
         if not os.path.exists(filename):
             print("No dave data. Creating a new save file!")
             return cls(1, 0, 0)

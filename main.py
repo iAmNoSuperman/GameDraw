@@ -31,7 +31,7 @@ def main():
 
     # Get a random daily quest, complete it and confirm the result to claim the points!
     daily_quest_data = ActivitiesAndStore()
-    daily_quest_data.load_csv("Квест", "daily_quest.csv")
+    daily_quest_data.load_csv("Квест", "data/daily_quest.csv")
     random_daily = daily_quest_data.get_random_row("Квест")
     print(random_daily[0])
     player.lvl_up(get_exp_for_completed_daily(random_daily))
@@ -40,7 +40,7 @@ def main():
 
     # Get a list of all major activities, choose one challenge and check if it was completed
     all_activities_data = ActivitiesAndStore()
-    all_activities_data.load_csv("Материал", "activities_data.csv")
+    all_activities_data.load_csv("Материал", "data/activities_data.csv")
     chosen_challenge = all_activities_data.choose("Материал")
     if chosen_challenge:
         player.lvl_up(get_exp_for_completed_challenge(chosen_challenge))
@@ -71,3 +71,6 @@ if __name__ == "__main__":
 # 5. Create a store with prizes for coins.                                      - DONE
 # 6. Make a clickable store with coins spending system                          -
 # 7. Link it to a git repository                                                - DONE
+# 8. Format the data saving system = jsons, csv should be in "data" folder. 
+#             The project in "gamedraw" folder and tests in "tests" folder.
+# 9. Add MORE tests! Make a list
